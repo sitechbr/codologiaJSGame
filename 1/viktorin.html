@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Викторина</title>
+</head>
+<body>
+    <button onclick="input_name()">Начать тест</button>
+    <p id="question"></p>
+    <p id="answer"></p>
+    <p id="button"></p>
+    <p id="result"></p>
+    
+	 <script>
+
+
+	  // функция расчёта
+	  function input_name() {
+            document.getElementById("question").innerHTML = '<p>Введите ваше имя</p>';
+	  	    document.getElementById("answer").innerHTML = '<input id="line_answer" value="Имя">';
+            document.getElementById("button").innerHTML = '<button onclick="result1()">Ответить</button>';
+
+      }
+      
+      function result1() {
+          var name = document.getElementById("line_answer").value;
+          result('Привет ' + name);
+      }
+      function result(line) {
+          document.getElementById("result").innerHTML =  line;
+          document.getElementById("button").innerHTML = '<button onclick="q1()">Слудующий вопрос</button>';
+          
+      }
+      
+      function q1() {
+            document.getElementById("question").innerHTML = '<p>Сколько лет живет черепаха</p>';
+	  	    document.getElementById("answer").innerHTML = '<input id="line_answer" value="0">';
+            document.getElementById("button").innerHTML = '<button onclick="result2()">Ответить</button>';
+          
+      }
+      
+      function result2() {
+          var a1 = document.getElementById("line_answer").value;
+          if (a1 == 1000) result("Верно");
+          else result("Не верно")
+      }
+	</script>
+
+</body>
+</html>

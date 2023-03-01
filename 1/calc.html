@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Калькулятор</title>
+</head>
+<body>
+	<!-- поле ввода первого числа -->
+	<input id="num1" />
+	<!-- блок с кнопками -->
+	<br>
+	<button id="plus" onclick="op='+'">+</button>
+	<br>
+	<!-- поле ввода второго числа -->
+	<input id="num2" />
+	<br>
+	<!-- кнопка для расчётов -->
+	<button onclick="func()">Посчитать</button>
+	<!-- здесь будет результат -->
+	<p id="result"></p>
+
+	<!-- наш скрипт -->
+	<script>
+	  // переменная, в которой хранится выбранное математическое действие
+	  var op; 
+
+	  // функция расчёта
+	  function func() {
+	  	// переменная для результата
+	    var result;
+	    // получаем первое и второе число
+	    var num1 = Number(document.getElementById("num1").value);
+	    var num2 = Number(document.getElementById("num2").value);
+	    // смотрим, что было в переменной с действием, и действуем исходя из этого
+	    result = num1 + num2;
+	    // отправляем результат на страницу
+	    document.getElementById("result").innerHTML = result;
+	  }
+	</script>
+
+</body>
+</html>
