@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id = "main-heading">Ежедневник</h1>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        for (var i=0;i<3;i++) {
+            var taskInDay = prompt("Напишите одну из задач на сегодня");   
+        $("body").append("<p>"+taskInDay+"</p>");
+        }
+        
+    </script>
+    <script>
+        $("body").append('<img style="width:200px" src="https://static.tildacdn.com/tild6437-6361-4031-b762-373836313439/Logo_mini_codologia.png">');
+        for (var i=0;i<3;i++) {
+            $("img").slideUp(1000).slideDown(1000);
+        }
+     </script>
+     <script>
+        var flicker = function () {
+            $("h1").fadeOut(1000).fadeIn(1000);
+        }
+        var intervalID = setInterval(flicker,1000);
+            
+        
+     </script>
+</body>
+</html>
