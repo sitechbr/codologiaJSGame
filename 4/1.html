@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP</title>
+</head>
+<body>
+    <script>
+        const dog= {
+            name: "Oladushek",
+            legs: 4,
+            isAwesome: true
+        };
+        dog.age = 50;
+
+        console.log(dog);
+
+        dog.bark = function () { 
+            console.log("Gav-gav. My name is "+ this.name + "!");
+        };
+
+        dog.bark();
+
+    </script>
+</body>
+</html>

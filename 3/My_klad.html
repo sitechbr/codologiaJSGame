@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <title> Treasure </title>
+</head>
+<body>
+    <h1>Найди клад</h1>
+    <img id = "map" width="400" src="https://img.freepik.com/premium-vector/pirate-treasure-map-for-children-in-cartoon-style-cute-concept-for-kids-room-design_103291-219.jpg">
+    <p id = "hint"></p>
+    <script>
+        width = 400;
+        height = 400;
+
+
+        var getRandomNumber = function(size) {
+            return Math.floor(Math.random()*size);
+        };
+        
+        var getDistance = function(event, target) {
+            var diffX = target.x - event.offsetX;
+            var diffY = target.y - event.offsetY;
+            return Math.sqrt((diffX*diffX)+(diffY*diffY));
+        };
+
+        var getDistanceHint = function(distance) {
+            if (distance < 10) {
+                return "Обожжешься!";
+            } else if (distance < 20) {
+                return "Очень горячо";
+            } else if (distance < 40) {
+            return "Горячо";
+            } else if (distance < 80) {
+            return "Тепло";
+            } else if (distance < 160) {
+            return "Холодно";
+            } else if (distance < 320) {
+            return "Очень холодно";
+            } else {
+            return "Замерзнешь!";
+            }
+        };
+        
+        var target = {
+            x: getRandomNumber(width),
+            y: getRandomNumber(height),
+        }
+
+        //console.log(target.x);
+        //console.log(target.y);
+
+        $("#map").click(function(event) {
+            //console.log(event.offsetX);
+            //console.log(event.offsetY);
+            var distance = getDistance(event,target);
+            var hint = getDistanceHint(distance);
+            $("#hint").text(hint);
+            console.log(distance)
+            if (distance < 20) {
+                alert("Клад найден");
+            }
+        });
+    
+    </script>
+    
+</body>
+</html>
