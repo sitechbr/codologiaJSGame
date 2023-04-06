@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OOP</title>
+</head>
+<body>
+    <script>
+        var speek = function() {
+            console.log(this.sound + "! My name is " + this.name+"!");
+        }
+
+        var cat = {
+            sound: "Meow",
+            name: "Murka", 
+            speak: speek
+        };
+
+        var pig = {
+            sound: "HruHru",
+            name: "Kesha", 
+            speak: speek
+        };
+
+        var horse = {
+            sound: "IgoGO",
+            name: "Petr", 
+            speak: speek
+        };
+
+
+        cat.speak();
+        pig.speak();
+        horse.speak();
+    </script>
+</body>
+</html>

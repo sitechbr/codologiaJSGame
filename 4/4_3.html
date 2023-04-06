@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Race</title>
+</head>
+<body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script>
+        var Car = function (model,x,y) {
+            this.x = x;
+            this.y = y;
+            this.model = model;
+            
+        };
+
+        var drawCar = function(car) {
+            if (car.model == "tesla") {            
+                var carHTML = '<img src="https://w7.pngwing.com/pngs/492/815/png-transparent-machine-child-16-child-photography-people.png">';
+            }
+            else if (car.model == "BMW"){
+                var carHTML = '<img src="https://w7.pngwing.com/pngs/492/815/png-transparent-machine-child-16-child-photography-people.png">';
+
+            }
+
+            else {
+                var carHTML = '<img src="https://w7.pngwing.com/pngs/492/815/png-transparent-machine-child-16-child-photography-people.png">';
+
+            }
+            var carElement = $(carHTML);
+
+            carElement.css({
+                position:"absolute",
+                left: car.x,
+                top: car.y,
+                width: "100px"
+            });
+            $("body").append(carElement);
+
+        };
+
+
+        var tesla = new Car("tesla",50,100);
+        console.log(tesla);
+        drawCar(tesla);
+        var bmw = new Car("BMW",50,20);
+        console.log(bmw);
+        drawCar(bmw);
+
+
+        
+    </script>
+</body>
+</html>
