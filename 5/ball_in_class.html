@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-1.12.3.js" integrity="sha256-1XMpEtA4eKXNNpXcJ1pmMPs8JV+nwLdEqwiJeCQEkyc=" crossorigin="anonymous"></script>
+    <canvas id="canvas" width="400" height="400"> </canvas>
+
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx= canvas.getContext("2d");
+        var width = canvas.width;
+        var height= canvas.height;
+        var score = 0;
+
+        var gameOver = function() {
+            ctx.font = "60px Courier";
+            ctx.fillStyle = "Black";
+            ctx.textAlign = "center";
+            ctx.fillText("Конец игры", width/2,height/2);
+            clearInterval(intervalID);
+        }
+
+        var drawScore = function() {
+            ctx.font = "20px Courier";
+            ctx.fillStyle = "Black";
+            ctx.textAlign = "left";
+            ctx.fillText("Счет: "+ score, 20,20);
+            
+        }
+
+        var circle = function(x,y,radius,color) {
+            ctx.beginPath();
+            ctx.fillStyle=color;
+            ctx.arc (x,y,radius,0,Math.PI*2,false);
+          
+            ctx.fill();
+        };
+
+        var Snake = function() {
+            this.x = width/2
+            this.y = height/2
+            this.color = "Blue"
+            this.radius = 20;
+            this.xSpeed = 5;
+            this.ySpeed = 0;
+        };
+
+        Snake.prototype.move = function () {
+            this.x += this.xSpeed;
+            this.y += this.ySpeed;
+            this.eatable(apple);
+            if (this.x<0||this.x>width||this.y<0||this.y>height) {
+                gameOver();
+            }
+        }
+
+        Snake.prototype.setDirection = function(direction) {
+            if (direction == "up") {
+                this.xSpeed =0;
+                this.ySpeed = -5; 
+            }
+            if (direction == "down") {
+                this.xSpeed =0;
+                this.ySpeed = 5; 
+            }
+            if (direction == "left") {
+                this.xSpeed =-5;
+                this.ySpeed = 0; 
+            }
+            if (direction == "right") {
+                this.xSpeed =5;
+                this.ySpeed = 0; 
+            }
+            if (direction == "stop") {
+                this.xSpeed =0;
+                this.ySpeed = 0; 
+            }
+
+        }
+
+        Snake.prototype.draw =function() {
+            circle(this.x,this.y,this.radius,this.color);
+        };
+
+        Snake.prototype.eatable = function(obj) {
+            if (Math.abs(this.x - obj.x) < 20 && Math.abs(this.y - obj.y) < 20) {
+                score++;
+                console.log(score);
+                apple.move();
+            }
+        };
+
+
+        var Apple = function() {
+            this.x = 0;
+            this.y = 0;
+            this.color = "Red";
+            this.radius = 10;
+            this.move();
+        };
+
+        Apple.prototype.move =function() {
+            this.x = 10+ Math.floor(Math.random()*(width-20));
+            this.y = 10+ Math.floor(Math.random()*(height-20));
+        }
+
+        Apple.prototype.draw = function() {
+            circle(this.x,this.y,this.radius,this.color);
+        }
+
+        var Snake = new Snake();
+        var apple = new Apple();
+        Snake.draw();
+        
+        var keyAction ={
+            32:'stop',
+            37:'left',
+            38:'up',
+            39:'right', 
+            40:'down'
+        }
+
+        $("body").keydown(function(event) { 
+            //console.log(event.keyCode);
+            var direction = keyAction[event.keyCode];
+            Snake.setDirection(direction);
+        });
+
+        var intervalID = setInterval(function () {
+            ctx.clearRect(0,0,width,height)
+            Snake.draw()
+            apple.draw();
+            Snake.move();
+            drawScore();
+            ctx.strokeRect(0,0,width,height)
+        },30);
+
+    </script>
+</body>
+</html>
