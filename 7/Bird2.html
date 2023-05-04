@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flapy Bird</title>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-1.12.3.js" integrity="sha256-1XMpEtA4eKXNNpXcJ1pmMPs8JV+nwLdEqwiJeCQEkyc=" crossorigin="anonymous"></script>
+    <canvas id="canvas" width="600" height="600"> </canvas>
+
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx= canvas.getContext("2d");
+        
+
+        var width = canvas.width;
+        var height= canvas.height;
+        var score = 0;
+        var my_keyCode = 0;
+        
+
+        var Bird = function(x,y,color) {
+            this.x = x;
+            this.y = y;
+            this.width = 40;
+            this.height = 40;
+            this.color = color;
+            this.gravity = 2;
+            this.jump = 4;
+        }
+
+        Bird.prototype.draw =function() {
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+
+        Bird.prototype.move = function(my_event) {
+            if (my_event > 0) {
+                this.y-=this.jump;
+            }
+            else {
+                this.y+=this.gravity;
+            }
+
+        }
+
+
+        var Wall = function(x,y) {
+            this.x = x;
+            this.y= y;
+            this.height =200;
+            this.width = 20;
+            this.color = "black";
+            this.speed = 2;
+        }
+
+
+        Wall.prototype.draw =function() {
+            ctx.beginPath();
+            ctx.fillStyle = this.color;
+            ctx.fillRect(this.x, this.y, this.width, this.height);
+        }
+
+        Wall.prototype.move = function() {
+            this.x -= this.speed;
+            if (this.x < 0) {
+                score++;
+                this.x = height;
+
+            }
+        }
+
+        Wall.prototype.crash = function(obj) {
+            if (Math.abs(this.x - obj.x)<20) {
+               
+                if (this.y < obj.y && (this.y+this.height)>obj.y) {
+                    gameOver();
+                }
+            } 
+
+            if (obj.y < 0 || obj.y > height) {
+                gameOver();
+            }
+        }
+
+
+
+       
+
+        var bird = new Bird(40,40,"black");
+        var upWall = new Wall(width,0);
+        var downWall = new Wall(width,350);
+        
+        
+        $("body").keydown(function(event) { 
+            
+            my_keyCode = 25;
+            
+        });
+
+        var intervalID = setInterval(function () {
+            
+            ctx.clearRect(0,0,width,height);
+            
+            bird.move(my_keyCode);
+            bird.draw();
+            upWall.move();
+            downWall.move();
+            upWall.draw();
+            downWall.draw();
+            downWall.crash(bird);
+            upWall.crash(bird);
+            drawScore();
+            my_keyCode-=1;
+            
+            // if (Snake.cheakWall())  {
+            //     gameOver();  
+            // }
+           
+            ctx.strokeRect(0,0,width,height);
+        },1);
+        
+        
+        var gameOver = function() {
+            clearInterval(intervalID)
+            ctx.font = "60px Courier";
+            ctx.fillStyle = "Black";
+            ctx.textAlign="center";
+            ctx.textBaseline="midle";
+            ctx.fillText("Конец игры", width/2,height/2)
+        }
+
+        var drawScore = function() {
+            ctx.font = "20px Courier";
+            ctx.fillStyle = "Black";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "top";
+            ctx.fillText("Cчет:"+ score,10,10) 
+        }
+
+        
+
+
+
+    </script>
+</body>
+</html>

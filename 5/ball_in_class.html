@@ -16,6 +16,8 @@
         var width = canvas.width;
         var height= canvas.height;
         var score = 0;
+        var direction = "right";
+
 
         var gameOver = function() {
             ctx.font = "60px Courier";
@@ -40,51 +42,64 @@
           
             ctx.fill();
         };
-
-        var Snake = function() {
-            this.x = width/2
-            this.y = height/2
-            this.color = "Blue"
-            this.radius = 20;
-            this.xSpeed = 5;
-            this.ySpeed = 0;
+        
+        var Block = function(x,y) {
+            this.x = x;
+            this.y = y;
         };
 
-        Snake.prototype.move = function () {
-            this.x += this.xSpeed;
-            this.y += this.ySpeed;
-            this.eatable(apple);
-            if (this.x<0||this.x>width||this.y<0||this.y>height) {
+        var Snake = function() {
+            this.segments = [new Block(70,20),
+                             new Block(80,20),
+                             new Block(90,20)];
+            this.color = "Blue"
+            this.fact_dir = "right"
+            this.radius = 20;
+            
+        };
+
+        Snake.prototype.move = function (direction) {
+            var head = this.segments[0]
+            var newHead = head;
+            console.log(this.direction);
+            this.fact_dir = direction;
+            
+            if (this.fact_dir =="up") {
+                newHead = new Block(head.x, head.y -20);
+            }
+
+            if (this.fact_dir =="down") {
+                newHead = new Block(head.x, head.y +20);
+            }
+
+            if (this.fact_dir =="right") {
+                newHead = new Block(head.x+20, head.y);
+            }
+
+            if (this.fact_dir =="left") {
+                newHead = new Block(head.x-20, head.y);
+            }
+
+            this.segments.unshift(newHead);
+            this.segments.pop();
+
+         
+            
+            
+            
+            //this.eatable(apple);
+            if (newHead.x<0||newHead.x>width||newHead.y<0||newHead.y>height) {
                 gameOver();
             }
         }
 
-        Snake.prototype.setDirection = function(direction) {
-            if (direction == "up") {
-                this.xSpeed =0;
-                this.ySpeed = -5; 
-            }
-            if (direction == "down") {
-                this.xSpeed =0;
-                this.ySpeed = 5; 
-            }
-            if (direction == "left") {
-                this.xSpeed =-5;
-                this.ySpeed = 0; 
-            }
-            if (direction == "right") {
-                this.xSpeed =5;
-                this.ySpeed = 0; 
-            }
-            if (direction == "stop") {
-                this.xSpeed =0;
-                this.ySpeed = 0; 
-            }
-
-        }
 
         Snake.prototype.draw =function() {
-            circle(this.x,this.y,this.radius,this.color);
+            for(var i =0;i<this.segments.length;i++) {
+                //console.log(this.segments[i].x,this.segments[i].y)
+                circle(this.segments[i].x,this.segments[i].y,this.radius,this.color);
+            }
+            
         };
 
         Snake.prototype.eatable = function(obj) {
@@ -101,7 +116,7 @@
             this.y = 0;
             this.color = "Red";
             this.radius = 10;
-            this.move();
+            
         };
 
         Apple.prototype.move =function() {
@@ -127,18 +142,20 @@
 
         $("body").keydown(function(event) { 
             //console.log(event.keyCode);
-            var direction = keyAction[event.keyCode];
-            Snake.setDirection(direction);
+            direction = keyAction[event.keyCode];
+        
         });
 
         var intervalID = setInterval(function () {
             ctx.clearRect(0,0,width,height)
-            Snake.draw()
+            
             apple.draw();
-            Snake.move();
+            Snake.move(direction);
+            Snake.draw()
             drawScore();
+            console.log(Snake.segments[0].x)
             ctx.strokeRect(0,0,width,height)
-        },30);
+        },100);
 
     </script>
 </body>
