@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -195,4 +196,203 @@
 
     </script>
 </body>
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-1.12.3.js" integrity="sha256-1XMpEtA4eKXNNpXcJ1pmMPs8JV+nwLdEqwiJeCQEkyc=" crossorigin="anonymous"></script>
+    <canvas id="canvas" width="600" height="600"> </canvas>
+
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx= canvas.getContext("2d");
+        
+
+        var width = canvas.width;
+        var height= canvas.height;
+        var score = 0;
+        direction = 'right';
+
+       
+
+        var Block = function(x,y) {
+            this.x =x;
+            this.y =y;
+        }
+
+        Block.prototype.drawCircle = function(radius,color) {
+            ctx.beginPath();
+            ctx.fillStyle=color;
+            ctx.arc (this.x,this.y,radius,0,Math.PI*2,false);          
+            ctx.fill();
+        };
+
+
+        var Snake = function() {
+            
+            this.color = "Black";
+            this.radius = 20;
+            
+            this.direction="right";
+            this.segments = [
+                new Block(70,20),
+                new Block(80,20),
+                new Block(90,20),
+            ]
+        };
+
+        Snake.prototype.move = function (direction) {
+            var head =this.segments[0];
+            var newHead;
+            this.direction = direction;
+
+            if (this.direction == "up") {
+                newHead = new Block(head.x,head.y-20);
+            }
+            if (this.direction == "down") {
+                newHead = new Block(head.x,head.y+20);
+            }
+            if (this.direction == "left") {
+                newHead = new Block(head.x-20,head.y);
+            }
+            if (this.direction == "right") {
+                newHead = new Block(head.x+20,head.y);
+            }
+            
+            this.segments.unshift(newHead);
+            if (newHead.eatable(apple.position)){
+                apple.move();
+                score++;
+            }
+            else {
+                this.segments.pop()
+            }
+           
+
+            if ((newHead.x < 0) || (newHead.x > width) || (newHead.y < 0) || (newHead.y > height)) {
+                gameOver();
+            }
+        
+            // if (this.x < 0) {
+            //     this.x = width;
+            // } else if (this.x > width) {
+            //     this.x =0;
+            // } else if (this.y < 0) {
+            //     this.y = height;
+            // } else if (this.y > height) {
+            //     this.y = 0;
+            // }
+
+
+
+        }
+
+        var Apple = function() {
+            this.position = new Block(10,10);
+            this.color = "red";
+            this.radius = 10;
+            this.move();
+            
+        };
+
+        Apple.prototype.draw =function() {
+            this.position.drawCircle(this.radius,this.color)
+        }
+        
+        Apple.prototype.move = function () {
+            this.position = new Block(10+ Math.floor(Math.random() * (width - 20)),10+ Math.floor(Math.random() * (height - 20)))
+        }
+
+
+        Snake.prototype.draw =function() {
+            for(var i =0;i<this.segments.length; i++) {
+                this.segments[i].drawCircle(20,"Black");
+            }
+        //     circle(this.x,this.y,this.radius, this.color)
+        }
+
+        Block.prototype.eatable =function(obj) {
+            if (Math.abs(this.x - obj.x)<20&&(Math.abs(this.y - obj.y)<20 )) {
+                return true
+            }
+            else {
+                return false
+            }
+        }
+
+        // Snake.prototype.cheakWall=function() {
+        //     if (this.x < 0 || this.x > width || this.y<0 || this.y>0)
+        //         return true
+
+        // }
+
+        var Snake = new Snake();
+        var apple = new Apple();
+        
+        
+        var keyAction ={
+            32:'stop',
+            37:'left',
+            38:'up',
+            39:'right', 
+            40:'down'
+        }
+
+        $("body").keydown(function(event) { 
+            
+            direction = keyAction[event.keyCode];
+            
+        });
+
+        var intervalID = setInterval(function () {
+            ctx.clearRect(0,0,width,height);
+            // ctx.fillStyle = "Black";
+            // ctx.fillRect(0,0,width,10);
+            // ctx.fillRect(0,height-10,width,10);
+            // ctx.fillRect(0,0,10,height);
+            // ctx.fillRect(width-10,0,10,height);
+            
+            Snake.move(direction);
+            Snake.draw();
+            apple.draw();
+            
+            // if (Snake.cheakWall())  {
+            //     gameOver();  
+            // }
+            drawScore();
+            ctx.lineWidth = 15;
+            ctx.strokeRect(0,0,width,height)
+        },100);
+        
+        
+        var gameOver = function() {
+            clearInterval(intervalID)
+            ctx.font = "60px Courier";
+            ctx.fillStyle = "Black";
+            ctx.textAlign="center";
+            ctx.textBaseline="midle";
+            ctx.fillText("Конец игры", width/2,height/2)
+        }
+
+        var drawScore = function() {
+            ctx.font = "20px Courier";
+            ctx.fillStyle = "Black";
+            ctx.textAlign = "left";
+            ctx.textBaseline = "top";
+            ctx.fillText("Cчет:"+ score,10,10) 
+        }
+
+        
+
+
+
+    </script>
+</body>
+>>>>>>> a3e71d42d60bf6b0ab9ff56ff81084c1aaa28824
 </html>
