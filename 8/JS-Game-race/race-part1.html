@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>JS Game</title>
+		
+		
+	</head>
+	<body>
+		
+			<canvas width="500" height="500"  class="canvas" id="canvas"></canvas>
+		
+		<script>
+            class Car {
+                constructor(image,x,y,isPlayer) {
+                    this.x = x;
+                    this.y = y;
+                    this.loaded = false;
+                    this.dead = false;
+                    this.isPlayer = isPlayer;
+                    this.image = new Image();
+                    this.image.src = image;
+                }
+
+                Move(d) {
+                    this.x+=d;
+
+                    if (this.x <0) {
+                        this.x = 0;
+                    }
+                    if (this.x+this.image.width > canvas.width) {
+                        this.x = canvas.width-this.image.width;
+                    }
+                }
+            }
+
+            const UPDATE_TIME = 1000/60;
+            var timer = null;
+            var canvas = document.getElementById("canvas");
+            var ctx = canvas.getContext("2d");
+            var speed = 10;
+            window.addEventListener("keydown",function(e) {KeyDown(e);});
+            
+            var player = new Car("images/car.png",canvas.width/2, canvas.height -100,true);
+            Start();
+            
+            
+            function KeyDown(e) {
+                switch(e.keyCode) {
+                    case 37: //left
+                        player.Move(-speed);
+                        break;
+                    case 39: //right
+                        player.Move(speed);
+                        break;
+                }
+            }
+
+
+            function Start() {
+                if (!player.dead) {
+                    timer  = setInterval(Update,UPDATE_TIME);
+                }
+            }
+
+            function Stop() {
+                clearInterval(timer);
+                timer = null;
+            }
+
+
+            function Update() {
+                console.log(RandomInteger(100,200))
+                Draw();
+            }
+
+            function Draw() {
+                ctx.clearRect(0,0,canvas.width,canvas.height);
+                DrawCar(player);
+            }
+
+            function DrawCar(car) {
+                ctx.drawImage(
+                    car.image,
+                    car.x,
+                    car.y,
+                    car.image.width,
+                    car.image.height
+                )
+                
+            
+            }
+
+            function RandomInteger(min,max) {
+                var rand = Math.floor(min + Math.random()*(max-min));
+                return rand;
+            }
+
+        </script>
+	</body>
+</html>
